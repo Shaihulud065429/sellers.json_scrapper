@@ -158,7 +158,7 @@ Ce script permet de scraper les fichiers `ads.txt` et `sellers.json` des sites w
 
 1. Cloner le dépôt :
 ```bash
-git clone [URL_DU_REPO]
+git clone https://github.com/Shaihulud065429/sellers.json_scrapper.git
 ```
 
 2. Installer les dépendances :
