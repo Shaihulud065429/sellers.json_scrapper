@@ -1,11 +1,10 @@
-
 # Présentation (Fr)
 
-**Dans le cadre de ses travaux sur les cookies et autres traceurs, le LINC publie deux études permettant de visualiser les interactions entre les différents acteurs de la publicité en ligne. Se basant sur un protocole de "scraping", ces études permettent une compréhension objective des mécanismes implémentés et de l’ampleur de leur utilisation.**
+**Dans le cadre de ses travaux sur les cookies et autres traceurs, le LINC publie deux études permettant de visualiser les interactions entre les différents acteurs de la publicité en ligne. Se basant sur un protocole de "scraping", ces études permettent une compréhension objective des mécanismes implémentés et de l'ampleur de leur utilisation.**
 
-Pour permettre une plus grande confiance entre les acteurs de la publicité en ligne, l’IAB (Interactive Advertisement Bureau) propose à ceux-ci de déclarer leurs relations professionnelles via l’utilisation de deux standards :
-* **Le standard Ads.txt** permettant aux éditeurs de sites web de déclarer les sociétés autorisées à vendre l’espace publicitaire dont ils disposent
-* **Le standard Sellers.json** permettant aux vendeurs d’espaces publicitaires (SSP pour supply-side platform), de lister leurs fournisseurs d’espaces publicitaires, que ceux-ci soient des éditeurs ou des intermédiaires.
+Pour permettre une plus grande confiance entre les acteurs de la publicité en ligne, l'IAB (Interactive Advertisement Bureau) propose à ceux-ci de déclarer leurs relations professionnelles via l'utilisation de deux standards :
+* **Le standard Ads.txt** permettant aux éditeurs de sites web de déclarer les sociétés autorisées à vendre l'espace publicitaire dont ils disposent
+* **Le standard Sellers.json** permettant aux vendeurs d'espaces publicitaires (SSP pour supply-side platform), de lister leurs fournisseurs d'espaces publicitaires, que ceux-ci soient des éditeurs ou des intermédiaires.
 
 Ce repo contient les codes des pages web de ces études, ainsi que les outils ayant permis de collecter les données et générer les visualisations:
 * Les codes sources des articles sont disponible [en anglais](./Articles/En/) et [en francais](./Articles/Fr/).
@@ -17,7 +16,7 @@ Enfin, si vous souhaitez lire les articles, ils sont disponibles directement sur
 
 ## Données personnelles
 
-Cette étude repose sur la collecte d'URL et de données exclusivement relatives à des personnes morales. Cependant, dans certains cas, ces informations sont susceptibles de  comprendre des données à caractère personnel. Ce traitement est mis en œuvre par la [CNIL](http://www.cnil.fr/). Il est fondé sur l’exercice de l’autorité publique et a pour finalité la production d’études sur les usages des technologies. Les données collectées sont relatives aux noms de domaines des sites web publiquement accessibles via Internet. Ces données seront conservées pendant une durée maximale de 5 ans. Pour en savoir plus sur les modalités de gestion de vos données ou exercer vos droits, vous pouvez [consulter cette page](https://www.cnil.fr/fr/donnees-personnelles).
+Cette étude repose sur la collecte d'URL et de données exclusivement relatives à des personnes morales. Cependant, dans certains cas, ces informations sont susceptibles de  comprendre des données à caractère personnel. Ce traitement est mis en œuvre par la [CNIL](http://www.cnil.fr/). Il est fondé sur l'exercice de l'autorité publique et a pour finalité la production d'études sur les usages des technologies. Les données collectées sont relatives aux noms de domaines des sites web publiquement accessibles via Internet. Ces données seront conservées pendant une durée maximale de 5 ans. Pour en savoir plus sur les modalités de gestion de vos données ou exercer vos droits, vous pouvez [consulter cette page](https://www.cnil.fr/fr/donnees-personnelles).
 
 Si vous utilisez le code source fourni pour collecter des données vous-même, vous êtes également susceptible de collecter et de traiter des données à caractère personnel. Dans ce cas, vous devez vous assurer du complet respect de vos obligations prévues par le RGPD, notamment en termes d'information des personnes concernées et de respect de leurs autres droits définis par le règlement européen.
 
@@ -55,3 +54,133 @@ Any reuse of the published data, if said data were personal data, implies that t
 ## License
 
 The license used is the [open license 2.0](./LICENSE.md). Some parts of the project are subjected to a legacy BSD 2-clause license, compatible with the open license 2.0.
+
+# AdTech Scraper
+
+A Python-based tool for scraping and analyzing ads.txt and sellers.json files from publisher domains. This tool helps SSPs and publishers collect and process data about authorized digital sellers and their relationships.
+
+## Features
+
+- Asynchronous scraping of ads.txt and sellers.json files
+- Support for multiple domains
+- Structured data parsing
+- CSV output for easy analysis
+- Error handling and logging
+- Support for both standard and .well-known paths for sellers.json
+
+## Requirements
+
+- Python 3.7+
+- Required packages (install using `pip install -r requirements.txt`):
+  - requests
+  - beautifulsoup4
+  - pandas
+  - tqdm
+  - python-dotenv
+  - aiohttp
+  - asyncio
+
+## Installation
+
+1. Clone this repository
+2. Install the required packages:
+```bash
+pip install -r requirements.txt
+```
+
+## Usage
+
+1. Modify the `domains` list in `scraper.py` with the domains you want to analyze:
+```python
+domains = [
+    'example.com',
+    'publisher1.com',
+    'publisher2.com'
+]
+```
+
+2. Run the scraper:
+```bash
+python scraper.py
+```
+
+3. The results will be saved in the `output` directory:
+   - `ads_txt_results.csv`: Contains parsed ads.txt data
+   - `sellers_json_results.csv`: Contains parsed sellers.json data
+
+## Output Format
+
+### ads.txt Results
+- domain: The publisher's domain
+- ad_system_domain: The advertising system domain
+- publisher_id: The publisher's account ID
+- account_type: The type of account (DIRECT, RESELLER)
+- certification_authority_id: The certification authority ID (if present)
+
+### sellers.json Results
+- domain: The publisher's domain
+- seller_id: The seller's ID
+- name: The seller's name
+- domain: The seller's domain
+- seller_type: The type of seller
+- is_confidential: Whether the seller is confidential
+- is_passthrough: Whether the seller is a passthrough
+
+## Error Handling
+
+The scraper includes comprehensive error handling:
+- Failed requests are logged but don't stop the process
+- Invalid JSON in sellers.json is handled gracefully
+- Network timeouts are managed
+- Results are saved even if some domains fail
+
+## Contributing
+
+Feel free to submit issues and enhancement requests!
+
+# Scraper Ads.txt et Sellers.json
+
+Ce script permet de scraper les fichiers `ads.txt` et `sellers.json` des sites web pour analyser les relations entre les différents acteurs de la publicité programmatique.
+
+## Fonctionnalités
+
+- Scraping des fichiers `ads.txt` et `sellers.json`
+- Analyse des relations entre éditeurs et intermédiaires
+- Génération de rapports hebdomadaires sur les nouveaux domaines
+- Export des données vers Google Sheets
+
+## Prérequis
+
+- Python 3.7+
+- Bibliothèques requises (voir `requirements.txt`)
+
+## Installation
+
+1. Cloner le dépôt :
+```bash
+git clone [URL_DU_REPO]
+```
+
+2. Installer les dépendances :
+```bash
+pip install -r requirements.txt
+```
+
+3. Configurer les identifiants Google Sheets dans le script
+
+## Utilisation
+
+```bash
+python ssp_scraper.py
+```
+
+## Structure du projet
+
+- `ssp_scraper.py` : Script principal
+- `List of SSP.csv` : Liste des SSP à analyser
+- `output/` : Dossier contenant les résultats
+- `last_week_domains.json` : Suivi des domaines par semaine
+
+## Licence
+
+[À définir]
